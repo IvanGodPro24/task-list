@@ -1,13 +1,19 @@
 import "./App.css";
-import initTasks from "../../tasks.json";
+// import initTasks from "../../tasks.json";
 import Filter from "../Filter/Filter";
 import Form from "../Form/Form";
 import TaskList from "../TaskList/TaskList";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [tasks, setTasks] = useState(initTasks);
+  const [tasks, setTasks] = useState(() => {
+    const savedTask = JSON.parse(localStorage.getItem("saved-task"));
+
+    return savedTask !== null ? savedTask : [];
+  });
   const [filter, setFilter] = useState("");
+
+  useEffect(() => localStorage.setItem("saved-task", JSON.stringify(tasks)));
 
   const addTask = (newTask) => {
     setTasks((prevTasks) => {
